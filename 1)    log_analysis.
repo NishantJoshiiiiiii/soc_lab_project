@@ -1,1 +1,33 @@
+🧠 Project: Introduction to Log Analysis
+🎯 Objective
+
+This project introduces the fundamentals of log analysis and demonstrates how logs from Windows and Linux systems can be used for security monitoring. As part of this lab, I analyzed system and PowerShell logs to understand how SOC Analysts detect, investigate, and respond to security incidents using log data.
+
+🧩 Project Overview
+
+Logs are essential records that capture every major event occurring in a system — including user actions, system errors, or authentication attempts. They contain key fields such as timestamps, event descriptions, severity levels, and source details.
+In this project, I explored how different logs are generated and where they are stored:
+
+Linux logs in /var/log/ (e.g., auth.log, syslog, kern.log)
+
+Windows logs accessible through Event Viewer, including System, Security, and Application logs.
+
+🧪 Practical Task: Detecting Suspicious PowerShell Activity
+
+To simulate a security event, I executed the following PowerShell command:
+
+Get-LocalUser | Select-Object Name, Enabled
+
+
+This command, often used for user enumeration, was logged under Event ID 4104 in Event Viewer → Microsoft → Windows → PowerShell → Operational.
+I successfully identified and analyzed this log entry to confirm detection.
+
+📘 Learning Outcome
+
+Understood how logs provide visibility into system activity.
+
+Learned to filter and identify specific PowerShell events using Event Viewer.
+
+Gained practical experience in log-based threat detection, a core skill for SOC Analysts.
+
 
