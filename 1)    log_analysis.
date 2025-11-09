@@ -18,6 +18,7 @@ To simulate a security event, I executed the following PowerShell command:
 
 Get-LocalUser | Select-Object Name, Enabled
 
+https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/c167d1ea510115fdc7b2d8acc7078c42ce0dda9c/IMG_20251109_171208843.jpg
 
 This command, often used for user enumeration, was logged under Event ID 4104 in Event Viewer → Microsoft → Windows → PowerShell → Operational.
 I successfully identified and analyzed this log entry to confirm detection.
