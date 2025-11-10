@@ -16,3 +16,6 @@ I could clearly see the failed login details, including the username and source 
 Conclusion:
 This lab taught me how to identify and interpret login-related events using Windows Security Logs.
 I understood how failed login patterns and privilege changes can help detect security issues, which is a key part of a SOC Analyst’s job.
+
+screenshots:
+https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/efdaa133ef9408edbb56c5f8afec80beb18c7bc4/IMG_20251110_185502975.jpg
