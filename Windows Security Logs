@@ -1,0 +1,18 @@
+Log Analysis Basics – Windows Security Logs
+
+Objective:
+In this lab, I learned how to check and analyze Windows Security Logs to detect login attempts and other security events. 
+It helped me understand how these logs play an important role in identifying unauthorized access and system changes.
+
+Overview:
+Windows Security Logs record important events such as successful and failed logins, account lockouts, and group membership changes.
+Some key event IDs include 4624 for successful logins, 4625 for failed logins, 4740 for account lockouts, and 4672 for privilege escalations. 
+Understanding these helps in recognizing unusual user behavior and security incidents.
+Lab Task:
+I created a user named IEUSER and used PowerShell to simulate a failed login with the command net use \\127.0.0.1\IPC$ /user:IEUSER WrongPassword. 
+Then I opened Event Viewer → Windows Logs → Security and filtered logs by Event ID 4625. 
+I could clearly see the failed login details, including the username and source network. I also checked Event ID 4624 to see what a successful login looks like.
+
+Conclusion:
+This lab taught me how to identify and interpret login-related events using Windows Security Logs.
+I understood how failed login patterns and privilege changes can help detect security issues, which is a key part of a SOC Analyst’s job.
