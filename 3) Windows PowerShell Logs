@@ -27,5 +27,5 @@ These logs help detect suspicious actions such as LOLBAS (Living Off The Land Bi
 Regularly monitoring Event IDs 4103 and 4104 enables SOC Analysts to detect and respond quickly to potential compromises.
 
 screenshots:
-https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/ad145b757f233b6f3bf5cca664a07bb202106c7e/17627888546144841061417107278563.jpg
-https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/61c12ef2b3bf27352aaf9ad4cfb43bad1f69ed00/17627889010236903790559016057087.jpg
+![ Windows PowerShell Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/ad145b757f233b6f3bf5cca664a07bb202106c7e/17627888546144841061417107278563.jpg)
+![ Windows PowerShell Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/61c12ef2b3bf27352aaf9ad4cfb43bad1f69ed00/17627889010236903790559016057087.jpg)
