@@ -18,7 +18,7 @@ This lab taught me how to identify and interpret login-related events using Wind
 I understood how failed login patterns and privilege changes can help detect security issues, which is a key part of a SOC Analyst’s job.
 
 screenshots:
-https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/160384e1f18d0dd03c2adcb7cecf4c13d7190e78/IMG_20251110_185916298.jpg
-https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/79c0825fac62ae447126f4af79fe8ba9cb50648d/IMG_20251110_185941848.jpg
-https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/efdaa133ef9408edbb56c5f8afec80beb18c7bc4/IMG_20251110_185502975.jpg
-https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/c76ddfbc1b246b8c113901e97ad84b34bdad9340/IMG_20251110_190405593.jpg
+![Windows Security Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/160384e1f18d0dd03c2adcb7cecf4c13d7190e78/IMG_20251110_185916298.jpg)
+![Windows Security Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/79c0825fac62ae447126f4af79fe8ba9cb50648d/IMG_20251110_185941848.jpg)
+![Windows Security Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/efdaa133ef9408edbb56c5f8afec80beb18c7bc4/IMG_20251110_185502975.jpg)
+![Windows Security Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/c76ddfbc1b246b8c113901e97ad84b34bdad9340/IMG_20251110_190405593.jpg)
