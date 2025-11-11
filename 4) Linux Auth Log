@@ -33,4 +33,7 @@ Auth logs are essential for detecting SSH brute-force attacks. Multiple failed a
 Submission
 
 Include a screenshot showing failed login entries from the same IP .
+https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/6f203341617c6debbf4f0eaba8acfd6aa33ceb06/IMG_20251111_204731405.jpg
+
+
 username(s) attempted.
