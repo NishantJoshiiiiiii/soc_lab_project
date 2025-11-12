@@ -44,3 +44,4 @@ Network-Based Attack Detection Using UFW
 
 -->Submission:
    Attach a screenshot of a syslog/ufw.log entry showing the blocked scan with source IP, targeted port (e.g., 80), and timestamp.
+   https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/20bdc82ba73fbfe0e34a1f2e15a0f5394c6975e9/IMG_20251112_204555658.jpg
