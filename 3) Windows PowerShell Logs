@@ -1,31 +1,31 @@
 Windows PowerShell Logs
 
-Objective:
-In this lab, I learned how to enable and analyze Windows PowerShell logs to identify suspicious or malicious command executions. 
-PowerShell logs are extremely useful for detecting post-exploitation techniques, privilege misuse, and attacker persistence mechanisms that rely on built-in Windows tools.
+--> Objective:
+    In this lab, I learned how to enable and analyze Windows PowerShell logs to identify suspicious or malicious command executions. 
+    PowerShell logs are extremely useful for detecting post-exploitation techniques, privilege misuse, and attacker persistence mechanisms that rely on built-in Windows tools.
 
-Lab Task:
-I first enabled PowerShell logging by turning on Module Logging, Script Block Logging, and Script Execution through the Group Policy Editor (Computer Configuration → Administrative Templates → Windows Components → Windows PowerShell).
-This ensures that all executed commands and scripts are recorded in the event logs.
+--> Lab Task:
+    I first enabled PowerShell logging by turning on Module Logging, Script Block Logging, and Script Execution through the Group Policy Editor (Computer Configuration → Administrative Templates → Windows Components → Windows PowerShell).
+    This ensures that all executed commands and scripts are recorded in the event logs.
 
-After enabling logging, I opened PowerShell as Administrator and ran the following command to generate a log entry:
+    After enabling logging, I opened PowerShell as Administrator and ran the following command to generate a log entry:
 
-   (Start-Process "notepad.exe" -ArgumentList "C:\Windows\System32\drivers\etc\hosts")
+    (Start-Process "notepad.exe" -ArgumentList "C:\Windows\System32\drivers\etc\hosts")
 
 
-This command launches Notepad and opens the system hosts file. It also generates PowerShell operational logs that record command execution details.
+    This command launches Notepad and opens the system hosts file. It also generates PowerShell operational logs that record command execution details.
 
-Visualize Events:
-Next, I opened Event Viewer and navigated to:
-Applications and Services Logs → Microsoft → Windows → PowerShell → Operational
+--> Visualize Events:
+    Next, I opened Event Viewer and navigated to:
+    Applications and Services Logs → Microsoft → Windows → PowerShell → Operational
 
-I filtered for Event ID 4103, which logs detailed command execution data. The event showed the exact PowerShell command I ran, the user account that executed it, and the timestamp.
+    I filtered for Event ID 4103, which logs detailed command execution data. The event showed the exact PowerShell command I ran, the user account that executed it, and the timestamp.
 
-Conclusion:
-Through this lab, I learned how PowerShell logs provide deep visibility into script and command-level activity on Windows systems.
-These logs help detect suspicious actions such as LOLBAS (Living Off The Land Binaries) usage, payload downloads, or persistence attempts. 
-Regularly monitoring Event IDs 4103 and 4104 enables SOC Analysts to detect and respond quickly to potential compromises.
+--> Conclusion:
+    Through this lab, I learned how PowerShell logs provide deep visibility into script and command-level activity on Windows systems.
+    These logs help detect suspicious actions such as LOLBAS (Living Off The Land Binaries) usage, payload downloads, or persistence attempts. 
+    Regularly monitoring Event IDs 4103 and 4104 enables SOC Analysts to detect and respond quickly to potential compromises.
 
-screenshots:
-![ Windows PowerShell Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/ad145b757f233b6f3bf5cca664a07bb202106c7e/17627888546144841061417107278563.jpg)
-![ Windows PowerShell Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/61c12ef2b3bf27352aaf9ad4cfb43bad1f69ed00/17627889010236903790559016057087.jpg)
+--> screenshots:
+    ![ Windows PowerShell Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/ad145b757f233b6f3bf5cca664a07bb202106c7e/17627888546144841061417107278563.jpg)
+    ![ Windows PowerShell Logs](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/61c12ef2b3bf27352aaf9ad4cfb43bad1f69ed00/17627889010236903790559016057087.jpg)
