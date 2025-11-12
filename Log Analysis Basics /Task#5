@@ -1,1 +1,41 @@
+Objective
 
+Simulate an SSH brute-force attack and demonstrate how to detect it using Linux authentication logs. 
+Learn to identify rapid failed logins, multiple usernames, and success after failure patterns that indicate brute-force activity.
+
+Lab summary & detection
+
+Run a controlled brute-force test from an attacker (Kali) against a target (Ubuntu) with hydra.
+Monitor the target’s auth logs (/var/log/auth.log on Ubuntu.
+Look for patterns: many failed attempts from a single IP, repeated targeting of sensitive accounts (root/admin), or a success immediately following many failures. 
+Combine manual log inspection with automated mitigations to block repeat offenders.
+
+Commands
+# Attack (only on authorized systems you control)
+hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://TARGET-IP
+
+# Ensure SSH is running on target
+sudo systemctl status ssh
+
+# Search for failed attempts
+sudo grep "Failed password" /var/log/auth.log
+
+# Count usernames tried
+sudo grep "Failed password" /var/log/auth.log | awk '{print $(NF-5)}' | sort | uniq -c | sort -nr
+
+# Watch auth log live
+sudo tail -f /var/log/auth.log
+
+Conclusion
+
+Auth logs are essential for detecting SSH brute-force attacks. Multiple failed attempts from a single IP within a short window are strong indicators. Use log analysis plus automated blocking (fail2ban) to prevent unauthorized access and reduce risk.
+
+Submission
+
+Include a screenshot showing failed login entries from the same IP .
+![Linux Auth Log](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/6f203341617c6debbf4f0eaba8acfd6aa33ceb06/IMG_20251111_204731405.jpg)
+![Linux Auth Log](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/d44ad8dcd139dfe6305bdd20be5332d8719d2dd0/IMG_20251111_204824541.jpg)
+
+
+username(s) attempted.
+![Linux Auth Log](https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/4a11b88846496afa9f0024e553bee7cff93315f1/IMG_20251111_205302500.jpg)
