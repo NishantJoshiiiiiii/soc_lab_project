@@ -1,0 +1,36 @@
+TCP Protocol Analysis
+
+-->Objective  
+   The objective of this lab is to understand and analyze **TCP (Transmission Control Protocol)** traffic using **Wireshark**.
+   This exercise focuses on how TCP establishes and terminates connections through the **three-way handshake**, how data is reliably transmitted, and how to interpret important TCP fields and flags for network investigation.
+
+---
+
+-->What We Saw  
+   In this lab, we examined a **sample PCAP file** in Wireshark to observe how TCP connections are initiated and terminated. 
+   Using filters like `tcp.flags.syn == 1`, `tcp.flags.fin == 1`, and `tcp`, we analyzed the **connection setup (SYN)**, **data exchange (ACK/PSH)**, and **connection termination (FIN)** stages.  
+
+-->Each TCP packet displayed key fields such as **Source Port**, **Destination Port**, **Sequence Number**, **Acknowledgment Number**, and **Flags**. We observed the **three-way handshake** process:  
+  1. **SYN** – Client initiates a connection  
+  2. **SYN-ACK** – Server acknowledges the request  
+  3. **ACK** – Client confirms and establishes the session  
+
+   Additionally, the **FIN** and **RST** flags were seen during connection termination and resets. 
+   By applying filters like `tcp.port == 80`, we focused on HTTP-related TCP traffic, helping us understand communication between clients and servers.  
+
+   This analysis highlighted how TCP maintains reliable communication by ensuring ordered delivery, acknowledgment of packets, and retransmission when errors occur.
+
+---
+
+-->Conclusion  
+   This lab demonstrated how **TCP** guarantees reliable and ordered data delivery through its **three-way handshake** and flow control mechanisms. 
+   Understanding TCP fields and flags is essential for **SOC analysts** to identify **connection states**, **troubleshoot dropped sessions**, and **detect abnormal behaviors** such as **port scans** or **RST floods** in network traffic.
+
+---
+
+-->Submission  
+Submit a screenshot showing:  
+- All TCP packets (`tcp`)  
+- SYN packets (`tcp.flags.syn == 1`)  
+- FIN packets (`tcp.flags.fin == 1`)  
+- TCP traffic to/from a specific host (`ip.addr == <host IP>`)
