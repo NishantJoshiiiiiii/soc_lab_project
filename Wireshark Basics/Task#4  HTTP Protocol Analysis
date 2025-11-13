@@ -28,7 +28,8 @@
 
 -->Submission  
    Submit a screenshot showing:  
-  - All HTTP traffic (`http`)  
+  - All HTTP traffic (`http`) 
+    https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/a299ec28228dc79567641eb93287cf31fea83fe8/IMG_20251113_203916555.jpg
   - All GET requests (`http.request.method == "GET"`) 
     https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/2d0b3cfdaebf478843016aa7b04b50d2ab1e711c/IMG_20251113_204039465.jpg
   - Requested resources (`http.request.uri`)
