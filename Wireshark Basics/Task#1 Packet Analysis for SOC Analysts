@@ -17,5 +17,6 @@ Packet Analysis for SOC Analysts
    https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/d8a76e56fcbad29fc395a52b7a88a9c488fded94/IMG_20251113_142812275.jpg
 
    A display filter applied to capture and analyze ICMP traffic.
+   https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/b8f98af51b4afb873623748cde03990642639220/IMG_20251113_142949782.jpg
 
    A capture filter configured to collect ICMP packets during live capture.
