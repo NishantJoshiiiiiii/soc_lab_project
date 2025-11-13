@@ -1,0 +1,20 @@
+Packet Analysis for SOC Analysts
+
+--.Objective:
+   The objective of this lab is to familiarize learners with Wireshark, one of the most widely used tools for packet analysis in a Security Operations Center (SOC) environment.
+   Through this exercise, students will learn how to capture live network traffic, apply display and capture filters, and analyze packets to identify potential security incidents.
+   By the end of this lab, students will understand how to differentiate between normal and suspicious communication patterns, a key skill for SOC analysts during incident detection and investigation.
+
+-->Overview:
+   Wireshark is an open-source network protocol analyzer that enables users to inspect packets traversing a network in real time or from previously captured files (PCAPs). 
+   It supports hundreds of protocols and provides detailed insights into packet headers and payloads. SOC analysts rely on Wireshark for t   asks such as incident response, malware analysis, threat hunting, and network troubleshooting. 
+   This lab will guide me through creating a custom profile for analysis, setting up ICMP filters, and exploring how traffic flows across the network.
+
+-->Submission:
+   submit the following screenshots as proof of completion:
+
+   A new Wireshark profile created and named “SOC Analyst”.
+
+   A display filter applied to capture and analyze ICMP traffic.
+
+   A capture filter configured to collect ICMP packets during live capture.
