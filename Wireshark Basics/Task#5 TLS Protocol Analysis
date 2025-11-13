@@ -1,0 +1,34 @@
+TLS Protocol Analysis
+
+-->Objective  
+   The objective of this lab is to analyze **TLS (Transport Layer Security)** traffic using **Wireshark**. 
+   This exercise focuses on understanding how TLS secures network communication, exploring the **handshake process**, and identifying useful metadata such as **server names**, **TLS versions**, and **certificate details** visible during encrypted sessions.
+
+---
+
+-->What I Saw  
+   In this lab, we examined a **sample PCAP file** in Wireshark to observe **TLS handshake messages** and encrypted traffic over **TCP port 443**. Using filters like `tls`, `tls.handshake.type == 1`, and `tls.record.version == 0x0303`, we analyzed the **TLS 1.2 handshake process** in detail.  
+
+   I Observed key stages such as:  
+- **Client Hello:** The client initiates a secure session and proposes supported cipher suites.  
+- **Server Hello:** The server responds by selecting a cipher and sending its **digital certificate (X.509)**.  
+- **Key Exchange:** Both sides agree on shared keys used for encryption.  
+- **Finished:** The encrypted communication begins.  
+
+   Although **Wireshark** cannot decrypt TLS content without private keys, it reveals critical metadata such as the **Server Name Indication (SNI)**, **TLS version**, **cipher suite**, and **certificate chain**. 
+   This information is valuable for identifying outdated protocols, self-signed certificates, or suspicious domains that could indicate malicious encryption use.
+
+---
+
+-->Conclusion  
+   This lab demonstrated how **TLS** provides secure, encrypted communication between clients and servers. 
+   Understanding TLS handshake messages and metadata helps **SOC analysts** detect **deprecated TLS versions**, **certificate anomalies**, and **potential abuse of encryption** in cyberattacks. 
+   Wireshark’s analysis of TLS traffic enhances visibility into secure session setup and network trust relationships.
+
+---
+
+-->Submission  
+   Submit a screenshot showing:  
+ - All TLS traffic (`tls`)  
+ - Client Hello messages (`tls.handshake.type == 1`)  
+ - TLS 1.2 traffic (`tls.record.version == 0x0303`)
