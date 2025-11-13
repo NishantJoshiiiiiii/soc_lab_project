@@ -31,5 +31,6 @@ TLS Protocol Analysis
    Submit a screenshot showing:  
  - All TLS traffic (`tls`)
    https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/f1e7bc9338fd748ba89831e9e87f12acfa29a0ee/IMG_20251113_212022482.jpg
- - Client Hello messages (`tls.handshake.type == 1`)  
+ - Client Hello messages (`tls.handshake.type == 1`)
+   https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/bb3e5cd3f27b34715787b3887826c75dcd098dab/IMG_20251113_212158333.jpg
  - TLS 1.2 traffic (`tls.record.version == 0x0303`)
