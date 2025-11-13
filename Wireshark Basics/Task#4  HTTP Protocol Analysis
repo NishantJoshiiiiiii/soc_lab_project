@@ -1,0 +1,34 @@
+ HTTP Protocol Analysis
+
+-->Objective  
+   The objective of this lab is to understand and analyze **HTTP (Hypertext Transfer Protocol)** packets using **Wireshark**. 
+   This exercise focuses on exploring HTTP request and response headers, understanding how client-server communication works on the web, and identifying possible indicators of HTTP-based attacks or data leaks.
+
+---
+
+-->What We Saw  
+   In this lab, we opened a **sample PCAP file** in Wireshark to examine HTTP traffic between a client and a web server. 
+   Using filters like `http`, `http.request.method == "GET"`, and `http.request.uri`, we viewed different types of HTTP requests and responses.  
+
+   We observed key fields such as **Request Method (GET/POST)**, **Host**, **User-Agent**, **URI**, **Status Code**, **Content-Type**, and **Cookies**. 
+   Each HTTP request from the browser contained a **method** (e.g., GET) and a **target URI**, while the server responded with a **status code** (e.g., 200 OK) and data such as web page content or files.  
+
+   By analyzing these fields, we could see how web communication occurs at the application layer over **TCP port 80**. 
+   Additionally, we noticed that sensitive data, cookies, or login details can appear in plain text, highlighting the importance of secure protocols like HTTPS. 
+   The lab also demonstrated how Wireshark can reveal potential threats, such as **malware callbacks**, **data leaks**, or **unauthorized downloads**, in HTTP traffic.
+
+---
+
+-->Conclusion  
+   This lab helped us understand how **HTTP** enables communication between web clients and servers. 
+   Using **Wireshark**, we explored HTTP headers, request methods, and responses in detail. 
+   Recognizing these patterns is crucial for **SOC analysts** to detect **data exfiltration**, **malicious payloads**, and **insecure web behavior** within network traffic.
+
+---
+
+-->Submission  
+   Submit a screenshot showing:  
+  - All HTTP traffic (`http`)  
+  - All GET requests (`http.request.method == "GET"`)  
+  - Requested resources (`http.request.uri`)
+
