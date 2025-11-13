@@ -34,3 +34,4 @@ Submit a screenshot showing:
 - SYN packets (`tcp.flags.syn == 1`)  
 - FIN packets (`tcp.flags.fin == 1`)  
 - TCP traffic to/from a specific host (`ip.addr == <host IP>`)
+  https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/d52ce5e85de73b4c5f3ea0d395bcddae5aef0872/IMG_20251113_190159281.jpg
