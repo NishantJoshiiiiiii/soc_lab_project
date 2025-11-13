@@ -32,6 +32,7 @@ TCP Protocol Analysis
 Submit a screenshot showing:  
 - All TCP packets (`tcp`)  
 - SYN packets (`tcp.flags.syn == 1`)  
-- FIN packets (`tcp.flags.fin == 1`)  
+- FIN packets (`tcp.flags.fin == 1`) 
+  https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/3d0e7c7232692a2e8a4d39aea7dce4ce0effc542/IMG_20251113_190118468.jpg
 - TCP traffic to/from a specific host (`ip.addr == <host IP>`)
   https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/d52ce5e85de73b4c5f3ea0d395bcddae5aef0872/IMG_20251113_190159281.jpg
