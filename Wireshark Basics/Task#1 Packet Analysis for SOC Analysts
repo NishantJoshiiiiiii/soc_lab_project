@@ -14,6 +14,7 @@ Packet Analysis for SOC Analysts
    submit the following screenshots as proof of completion:
 
    A new Wireshark profile created and named “SOC Analyst”.
+   https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/d8a76e56fcbad29fc395a52b7a88a9c488fded94/IMG_20251113_142812275.jpg
 
    A display filter applied to capture and analyze ICMP traffic.
 
