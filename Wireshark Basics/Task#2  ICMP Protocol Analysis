@@ -1,0 +1,65 @@
+ ICMP Protocol Analysis
+-->Objective
+
+The objective of this lab is to understand and analyze ICMP (Internet Control Message Protocol) packets using Wireshark.
+
+-->You will learn to:
+
+  Identify Echo Requests (Type 8) and Echo Replies (Type 0)
+
+  Interpret ICMP packet fields such as Type, Code, Checksum, Identifier, and Sequence Number
+
+  Apply Wireshark filters to investigate ICMP traffic
+
+-->Files used
+
+   Download and open the Sample PCAP file in Wireshark(online available)
+
+-->ICMP Packet Structure and Fields
+   Field Name	Description
+   Type	Defines the ICMP message type
+   Code	Provides further details for the message type
+   Checksum	Error-checking for the ICMP header
+   Identifier	Helps match requests and replies
+   Sequence No.	Sequence number of the request/reply
+   Data	Optional payload data
+
+-->Common ICMP Display Filters in Wireshark
+   Filter	Description
+   icmp	Shows all ICMP traffic
+   icmp.type == 8	Shows Echo Requests (ping)
+   icmp.type == 0	Shows Echo Replies
+   icmp.code == 3	Shows Destination Unreachable messages
+   ip.addr == 192.168.1.10	Shows ICMP traffic from/to a specific host
+
+-->What We Saw, During the lab:
+
+   Echo Request (Type 8) and Echo Reply (Type 0) packets were observed.
+
+   Each ICMP packet contained Type, Code, Identifier, and Sequence Number fields.
+
+   By using filters such as icmp.type == 8 and icmp.type == 0, we successfully isolated ping request and reply traffic.
+
+   The checksum verified data integrity, confirming correct packet transmission.
+
+   This analysis helped visualize how ping works and how ICMP helps with connectivity testing and troubleshooting.
+
+-->Conclusion
+
+   ICMP is essential for network diagnostics and connectivity verification.
+
+   Wireshark allows detailed inspection of ICMP traffic and helps in identifying patterns like ping sweeps or unreachable hosts.
+
+   Understanding ICMP packet flow is valuable for SOC Analysts to detect suspicious activity or reconnaissance attempts.
+
+-->Submission
+
+   Submit a screenshot showing:
+
+   ICMP packets (Echo Request and Echo Reply) visible in Wireshark
+
+   Filters applied (e.g., icmp.type == 8 or icmp.type == 0)
+
+   Packet details pane displaying Type, Code, Identifier, and Sequence Number
+
+   ICMP Echo Request and Echo Reply packets
