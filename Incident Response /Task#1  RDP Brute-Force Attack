@@ -1,0 +1,106 @@
+Introduction to Incident Response
+-->Objective
+
+   The objective of this lab is to introduce students to the fundamental concepts of Incident Response (IR), explain the NIST IR lifecycle, and demonstrate how SOC Analysts detect, investigate, and respond to basic security threats on Windows systems.
+   The lab focuses heavily on detecting and responding to an RDP brute-force attack, which is a common real-world incident handled by SOC teams.
+
+   What is Incident Response?
+
+   Incident Response is a structured, repeatable process used to identify and manage cybersecurity incidents. It ensures that threats are detected early, contained quickly, and resolved effectively. 
+   Proper IR helps organizations reduce downtime, prevent further compromise, and understand the root cause of an attack.
+
+-->NIST Incident Response Lifecycle (SP 800-61 Rev. 2)
+
+   Preparation – Establish policies, configure logging, train staff, deploy security tools, and ensure systems are hardened.
+
+   Detection & Analysis – Analyze alerts, logs, and suspicious behavior to confirm if an incident has occurred.
+
+   Containment, Eradication & Recovery – Isolate affected systems, remove malicious components, and safely restore operations.
+
+   Post-Incident Activity – Document findings, create incident reports, and implement improvements to prevent recurrence.
+
+-->Common Incident Types Across Platforms
+
+   Windows: RDP brute force attempts, PowerShell exploitation, malware execution, credential dumping, lateral movement.
+
+   Linux: SSH brute force, malicious cron jobs, privilege escalation, crypto miners, web shells.
+
+   AWS: IAM key misuse, unusual S3 access, disabled CloudTrail, EC2 used for C2 communication.
+
+   Network: DDoS attacks, port scanning, ARP spoofing, DNS tunneling.
+
+   Email: Phishing, malicious attachments, domain spoofing, BEC attempts.
+
+   These incidents generate specific log artifacts that help analysts identify malicious behavior.
+
+-->Lab Task : Detect & Respond to an RDP Brute-Force Attack
+   Lab Environment
+
+   Windows Server 2019/2022 with RDP enabled
+
+   Kali Linux with Hydra installed
+
+   Both systems must be connected to the same LAN or virtual network
+
+   Setup on Windows Server
+
+   Enable Remote Desktop in System Properties.
+
+   Allow RDP port (3389/TCP) in Windows Firewall.
+
+-->Create a test user:
+
+   net user nishant Password123 /add
+
+   Open Event Viewer → Windows Logs → Security
+
+   Filter for Event ID 4625 (Failed Logon)
+
+   Simulating the Attack from Kali Linux
+
+-->Run a brute-force attack using Hydra:
+
+   hydra -t 4 -V -f -l nishant -P paSswordlist.txt rdp://<Windows_Server_IP>
+
+
+   Hydra will attempt thousands of password combinations until it finds a match or stops.
+
+-->Detecting the Attack
+
+   On Windows Server, monitor Event Viewer → Security Logs. Each failed login attempt will generate:
+
+   Event ID: 4625
+
+   Logon Type: 10 (RemoteInteractive – RDP)
+
+   Failure Reason: Unknown username or bad password
+
+   Caller IP Address: IP of the Kali machine
+
+   Multiple events occurring in rapid succession from the same IP clearly indicate an RDP brute-force attempt.
+
+-->Responding to the Incident
+
+   Correlate repeated 4625 failures from the attacker’s IP
+
+   Disable the targeted user account (optional):
+
+   net user attackerlab /active:no
+
+
+-->Block the attacker’s IP using PowerShell:
+
+   New-NetFirewallRule -DisplayName "Block Attacker" -Direction Inbound -RemoteAddress <Kali_IP> -Action Block
+
+
+   Export and save all relevant logs as evidence
+
+   Document findings and prepare an incident report
+
+-->Submission Requirements
+
+   Screenshot of Hydra attack output
+
+   Screenshot of Event ID 4625 entries in Event Viewer
+
+   Screenshot or command showing firewall rule
