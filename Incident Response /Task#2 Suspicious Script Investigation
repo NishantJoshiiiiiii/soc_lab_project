@@ -1,0 +1,54 @@
+Linux Incident Response Lab
+-->Objective
+
+   The objective of this lab is to teach students how to detect, analyze, contain, and remove malicious scripts commonly dropped inside the /tmp directory on Linux systems.
+   This exercise helps SOC Analysts understand how attackers use temporary directories for staging payloads and how to respond effectively using standard Linux investigation commands.
+
+-->Lab Overview
+
+   In this lab, a suspicious shell script (fakebackup.sh) is detected inside /tmp, indicating potential malicious activity. 
+   Students simulate a basic script execution, investigate running processes and files, terminate malicious activity, and document findings as part of the incident response process.
+
+-->Lab Tasks
+  1. Preparation
+     Ensure core investigation utilities are installed: ps, lsof, curl, and grep.
+
+  2. Detection & Analysis
+
+     Check active processes:
+
+     ps aux | grep fakebackup.sh
+
+
+     Find suspicious scripts inside /tmp:
+
+     find /tmp -name "*.sh"
+
+  3. Containment & Eradication
+
+     Kill suspicious network-related processes:
+
+     pkill curl
+
+
+     Remove the malicious payload:
+
+     rm -f /tmp/payload.sh
+
+
+     Inspect persistence using crontab.
+
+  4. Post-Incident Activity
+
+     Document what alerted the system, identify the executing user, and review script behavior.
+     Implement recommendations such as enabling file integrity monitoring, restricting /tmp execution (noexec), and educating users on safe script practices.
+
+-->Submission Requirements
+
+   Submit the following screenshots:
+
+   Content of the suspicious script
+
+Process list showing script execution or network activity
+
+Confirmation that the malicious script was removed from /tmp
