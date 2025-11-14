@@ -48,9 +48,10 @@ Linux Incident Response Lab
    Submit the following screenshots:
 
    Content of the suspicious script
-   https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/d2ad0603d72ffaaa52466b63e0a47e072fb1dbf3/IMG_20251114_201725393.jpg
+   (https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/d2ad0603d72ffaaa52466b63e0a47e072fb1dbf3/IMG_20251114_201725393.jpg)
 
-Process list showing script execution or network activity
+   Process list showing script execution or network activity
+   (https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/47f3d438942b9f27d90ce126e55b2e61a32bc686/IMG_20251114_202303927.jpg)
 
    Confirmation that the malicious script was removed from /tmp
-   https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/aadae289aa9adb0c1c840fe6e981f286a0b9ec74/IMG_20251114_202037290.jpg
+   (https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/aadae289aa9adb0c1c840fe6e981f286a0b9ec74/IMG_20251114_202037290.jpg)
