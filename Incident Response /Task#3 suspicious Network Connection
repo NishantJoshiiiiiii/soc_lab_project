@@ -47,5 +47,6 @@ Suspicious Network Connection – Investigation & Response
   ps or lsof identifying the PID
 
   Process termination (kill or pkill)
+  https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/c58c3ecf369e96530a21af6a5a46b378ceea5275/IMG_20251116_150336738.jpg
 
   Firewall block rule using UFW
