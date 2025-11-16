@@ -1,0 +1,50 @@
+Suspicious Network Connection – Investigation & Response
+-->Objective
+
+   The objective of this lab is to investigate a suspicious outbound network connection on a Linux machine. 
+   I learned how to detect active connections, identify the responsible process, stop malicious activity, and block further communication using firewall rules.
+   This exercise simulates real SOC investigation steps for detecting beaconing or data-exfiltration behavior.
+
+-->Scenario
+
+   A Linux system is observed making repeated outbound connections to an unknown IP address:
+   45.13.220.98:443
+   This IP is not associated with any trusted service, and the pattern resembles automated beaconing. 
+   To simulate this behavior, we generate a repeating network request using curl.
+
+-->Commands Used in the Investigation
+   Simulate the Suspicious Connection
+   nohup bash -c 'while true; do curl http://45.13.220.98/ping >/dev/null 2>&1; sleep 30; done' &
+
+   1. Detect Active Network Connections
+   netstat -plant
+   # or
+   ss -plant
+
+   2. Identify the Responsible Process
+   ps aux | grep 45.13.220.98
+   lsof -i :443
+
+   3. Containment & Eradication
+   kill <PID>
+   pkill curl
+
+   4. Block the Malicious IP
+   ufw deny out to 45.13.220.98
+
+-->What I Saw
+
+  During analysis, repeated outbound traffic to the unknown IP confirmed beacon-like behavior.
+  The origin was a looped curl process. After killing the process and blocking the IP with UFW, the suspicious traffic stopped completely.
+
+-->Submission Requirements
+
+  submit screenshots of:
+
+  netstat or ss showing the suspicious connection
+
+  ps or lsof identifying the PID
+
+  Process termination (kill or pkill)
+
+  Firewall block rule using UFW
