@@ -42,6 +42,7 @@ Suspicious Network Connection – Investigation & Response
   submit screenshots of:
 
   netstat or ss showing the suspicious connection
+  https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/f9f43d7a92ab27171f7c5e78c3b063705743bfcd/IMG_20251116_145935418.jpg
 
   ps or lsof identifying the PID
 
