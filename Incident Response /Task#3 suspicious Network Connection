@@ -42,11 +42,12 @@ Suspicious Network Connection – Investigation & Response
   submit screenshots of:
 
   netstat or ss showing the suspicious connection
-  https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/f9f43d7a92ab27171f7c5e78c3b063705743bfcd/IMG_20251116_145935418.jpg
+  (https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/f9f43d7a92ab27171f7c5e78c3b063705743bfcd/IMG_20251116_145935418.jpg)
 
   ps or lsof identifying the PID
 
   Process termination (kill or pkill)
-  https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/c58c3ecf369e96530a21af6a5a46b378ceea5275/IMG_20251116_150336738.jpg
+  (https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/c58c3ecf369e96530a21af6a5a46b378ceea5275/IMG_20251116_150336738.jpg)
 
   Firewall block rule using UFW
+  (https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/c018ebb0ea6ce91ea5d5694fb3da835f935eb6aa/IMG_20251116_150533446.jpg)
