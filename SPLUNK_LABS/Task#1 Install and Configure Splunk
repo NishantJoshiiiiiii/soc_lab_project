@@ -1,0 +1,53 @@
+Install and Configure Splunk on Kali
+-->Objective
+
+   The objective of this lab is to guide students through installing and configuring Splunk Enterprise on an Ubuntu machine. 
+   By the end of this task, students will have Splunk running as a service, accessible through the browser, and ready to collect and analyze security logs—an essential skill for SOC analysts.
+
+-->Lab Setup Requirements
+
+   Operating System: kali linux
+
+   Tools Needed: Splunk Enterprise (Free), Terminal
+
+   Privileges: sudo access
+
+-->Steps & Commands Used
+  1. Download Splunk
+     wget -O splunk-9.3.0-51ccf43db5bd-linux-2.6-amd64.deb "https://download.splunk.com/products/splunk/releases/9.3.0/linux/splunk-9.3.0-51ccf43db5bd-linux-2.6-amd64.deb"
+
+  2. Install Splunk
+     sudo dpkg -i splunk-9.3.0-51ccf43db5bd-linux-2.6-amd64.deb
+
+  3. Enable Splunk Service
+     cd /opt/splunk/bin
+     sudo ./splunk enable boot-start --accept-license
+     sudo ./splunk start
+
+
+     Set an admin username and password when prompted.
+
+  4. Access Splunk Web
+
+     Open browser:
+
+     http://<your-server-ip>:8000
+
+
+     Log in using the admin credentials you created.
+
+-->WhatI Saw
+
+   Splunk installation through .deb package
+
+   First-time setup and admin configuration
+
+   Splunk service enabled to auto-start
+
+   Accessing Splunk Web UI successfully
+
+-->Submission
+
+   Upload a screenshot of the Splunk Web Interface (login page or dashboard) to your repository folder named:
+
+
