@@ -1,0 +1,53 @@
+DNS Log Analysis Lab
+-->Objective
+
+   The objective of this lab is to help students ingest and analyze DNS logs in Splunk.
+   I learned how to upload JSON-formatted Zeek DNS logs, extract useful insights such as query types, source IP activity, and domain frequency, and practice using SPL (Search Processing Language) for DNS investigations—an essential skill for SOC analysts.
+
+-->Lab Setup
+
+   Splunk: Installed and accessible
+
+   Log Format: Zeek DNS logs in JSON
+
+   File: dns.log (uploaded into Splunk)
+
+-->Steps Performed
+
+   In Splunk Web, navigated to Settings → Add Data → Upload.
+
+   Selected dns.log and set Source Type: json 
+
+   Indexed the data under dns_lab.
+
+   Verified successful ingestion by running a basic search.
+
+-->SPL Queries Used
+   Task 1 – Most Frequently Queried Domains
+   index=dns_lab sourcetype="json" | stats count by query | sort -count
+
+   Task 2 – Most Active Source Hosts
+   index=dns_lab sourcetype="json" | stats count by "id.orig_h" | sort -count
+
+   Task 3 – DNS Query Type Breakdown
+   index=dns_lab sourcetype="json" | stats count by qtype
+
+-->What I Saw
+
+   DNS logs successfully parsed in JSON format
+
+   Frequent DNS queries such as A, AAAA, and CNAME lookups
+
+   Source IPs generating high DNS traffic
+
+   Distribution of DNS query types for traffic profiling
+
+-->Submission
+
+   Upload the following screenshots to your GitHub repo folder dns-analysis/:
+
+   SPL query + result for Task 1
+
+   SPL query + result for Task 2
+
+   SPL query + result for Task 3
