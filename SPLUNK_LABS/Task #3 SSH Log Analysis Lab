@@ -1,0 +1,58 @@
+SSH Log Analysis Lab
+-->Objective
+
+   The objective of this lab is to teach students how to ingest and analyze SSH authentication logs using Splunk. 
+   By completing this task,I learned how to detect failed and successful SSH login attempts, identify unusual authentication patterns, and recognize potential brute-force or unauthorized access activity—critical skills for SOC analysts and incident responders.
+
+-->Lab Setup
+
+   Splunk: Installed and accessible
+
+   Log Source: JSON-formatted Zeek-style SSH logs
+
+   File Used: synthetic_zeek_ssh.json
+
+-->Steps Performed
+
+   Navigated to Splunk Web → Settings → Add Data → Upload.
+
+   Uploaded synthetic_zeek_ssh.json and set Source Type: json (or custom zeek:ssh).
+
+   Indexed the log data into ssh_lab.
+
+   Verified successful ingestion with a test search query.
+
+-->SPL Queries Used
+  Task 1 – Top 10 Endpoints With Failed SSH Logins
+    index=ssh_lab sourcetype="json" auth_success=false
+    | stats count by "id.orig_h"
+    | sort -count
+    | head 10
+
+  Task 2 – Total Number of SSH Connections
+    index=ssh_lab sourcetype="json"
+    | stats count as total_ssh_connections
+
+  Task 3 – Count of SSH Event Types
+    index=ssh_lab sourcetype="json"
+    | stats count by event_type
+
+-->What I Saw
+
+   Parsed SSH events including successful, failed, and multi-failed authentication attempts
+
+   Multiple source hosts attempting repeated logins (possible brute-force activity)
+
+   Clear breakdown of event types for authentication analysis
+
+   Total number of SSH transactions observed from the uploaded dataset
+
+-->Submission
+
+   Upload the following screenshots to your GitHub repo inside a folder named ssh-analysis/:
+
+   Query + result for Task 1
+
+   Query + result for Task 2
+
+   Query + result for Task 3
