@@ -1,0 +1,49 @@
+HTTP Log Analysis using Splunk 
+-->Objective
+
+   Learn how to ingest and analyze HTTP logs in Splunk.
+
+   Detect client errors, server errors, suspicious User-Agents, and abnormal HTTP activity.
+
+   Identify large file transfers and suspicious URI requests.
+
+
+-->Lab Tasks (SPL Queries)
+   Task 1: Top 10 endpoints
+      index=http_lab sourcetype="json"
+      | stats count by id.orig_h
+      | sort -count | head 10
+
+   Task 2: Count server errors (5xx)
+     index=http_lab sourcetype="json" status_code>=500 status_code<600
+     | stats count as server_errors
+
+   Task 3: Suspicious User-Agents
+     index=http_lab sourcetype="json"
+     user_agent IN ("sqlmap/1.5.1","curl/7.68.0","python-requests/2.25.1","botnet-checker/1.0")
+     | stats count by user_agent
+
+   Task 4: Large file transfers (>500 KB)
+     index=http_lab sourcetype="json" resp_body_len>500000
+     | table ts id.orig_h id.resp_h uri resp_body_len
+     | sort -resp_body_len
+
+  Task 5:List the most accessed suspicious uri
+
+-->What I Observed 
+
+   In this lab, I learned how Splunk processes HTTP logs and converts them into meaningful insights.
+   By uploading the Zeek HTTP JSON logs, I understood how indexing and source types affect log parsing. 
+   When running the first query, I observed which hosts generated the most web traffic, helping identify active clients. 
+   The 5xx error analysis showed how often the server responded with failures, which is useful for detecting availability issues or misuse. 
+   The User-Agent query revealed potential scripted tools like sqlmap, curl, and python-requests, commonly used during scanning or automated attacks. 
+   Identifying large file transfers also helped detect abnormal downloads that could indicate data exfiltration attempts. Overall, this step-by-step analysis improved my SOC investigation skills by showing how HTTP logs reveal behavior, errors, and threats.
+
+-->Submission
+
+   Submit screenshots for:
+✔ Task 1 results
+✔ Task 2 results
+✔ Task 3 results
+✔ Task 4 results
+✔ Task 5 results
