@@ -1,0 +1,40 @@
+Zeek Connection Log Analysis using Splunk
+-->Objective
+
+   This lab focuses on analyzing Zeek connection logs in Splunk to understand network behavior, identify top clients and servers, detect common services, and spot large or long-lived connections.
+   The goal is to help develop SOC investigation skills using real connection metadata.
+
+-->Lab Tasks (SPL Queries)
+   
+   Task 1 – Top 10 Client IPs
+     index=conn_lab sourcetype="json"
+     | stats count by id.orig_h | sort -count | head 10
+
+   Task 2 – Most Common Services
+     index=conn_lab sourcetype="json"
+     | stats count by service | sort -count
+
+   Task 3 – Connections lasting > 1 second
+     index=conn_lab sourcetype="json" duration>1
+     | table ts id.orig_h id.resp_h service duration
+     | sort -duration
+
+   Task 4 – Most Accessed Internal Servers
+     index=conn_lab sourcetype="json"
+     | stats count by id.resp_h | sort -count | head 10
+
+-->What I Observed 
+
+   In this lab, I explored how Zeek connection logs provide powerful visibility into network behavior. After uploading the JSON logs into Splunk, I used SPL queries to identify the most active client IPs, which helped me understand which hosts were generating the highest number of outbound connections. The service analysis revealed the most commonly used protocols, which is valuable for detecting unusual activity such as unexpected SSH, FTP, or IRC traffic.
+
+   Analyzing connections with a duration greater than one second helped highlight long-lived sessions. These can indicate file transfers, remote access sessions, or abnormal communication patterns. Similarly, identifying the most accessed internal servers showed which destinations were receiving the most traffic. This is useful for spotting high-value assets or servers that may be targeted frequently.
+
+   Overall, this hands-on lab demonstrated how Zeek logs combined with Splunk search capabilities can quickly reveal traffic trends, communication patterns, and potential anomalies across a network.
+
+-->Submission Requirements
+
+  Submit screenshots for:
+✔ Task 1 results
+✔ Task 2 results
+✔ Task 3 results
+✔ Task 4 results
