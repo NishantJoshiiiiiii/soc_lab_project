@@ -14,16 +14,22 @@ Bradesco Livelo Suspicious Email Investigation
 ❓ Questions to Answer
 
    What is the full email address of the sender?
+   -- 	 BANCO DO BRADESCO LIVELO<banco.bradesco@atendimento.com.br>
 
    What domain is used to send this email (From / Return-Path)?
+   --  atendimento.com
 
    What is the sender’s IP address from the header?
+   -- 137.184.34.4
 
    Is the sender IP blacklisted? (Yes / No — based on AbuseIPDB or VirusTotal)
+   --The most recent abuse report for this IP address is from 10 months ago. It is possible that this IP is no longer involved in abusive activities.(AbuseIPDB)
 
    What is the SPF authentication result? (Pass / Fail / Neutral)
+   -- Fail
 
    What suspicious URL or link appears in the email body?
+   -- hxxps[://]blog1seguimentmydomaine2bra[.]me/ (defang url by cyberchef)
 
 -->What I Saw During Analysis
 
@@ -33,12 +39,12 @@ Bradesco Livelo Suspicious Email Investigation
 
 -->Submission Requirements
 
-Upload the following screenshots to your GitHub repo:
+   Upload the following screenshots to your GitHub repo:
 
-Email header (sender, Return-Path, IP highlighted)
+   Email header (sender, Return-Path, IP highlighted)
 
-IP reputation lookup (AbuseIPDB or VirusTotal)
+   IP reputation lookup (AbuseIPDB or VirusTotal)
 
-Suspicious link extracted from the email body
+   Suspicious link extracted from the email body
 
-Email content or HTML preview showing urgency/spoofing
+
