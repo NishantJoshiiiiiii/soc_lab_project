@@ -1,0 +1,39 @@
+Phishing Analysis – Lookalike Domain Investigation
+-->Objective
+
+   The objective of this lab is to investigate a suspicious email and determine whether the sender domain is malicious. 
+   This exercise helps understand how phishing emails use lookalike domains, deceptive content, and poor authentication settings to trick users into revealing sensitive information.
+
+-->Scenario
+
+   Your security team received a suspicious email claiming to be from PayPal. The sender address was:
+   noreply@secure-paypai.com
+
+   Although similar to paypal.com, the attacker registered a lookalike domain (“paypai”) to mislead users.
+
+-->Phishing Analysis Steps
+
+   Collect the email – Export the email as .eml or .msg.
+
+   Analyze headers – Check Return-Path, SPF, DKIM, DMARC, and originating IP.
+
+   Inspect the body – Look for urgency, grammar issues, unusual requests.
+
+   Hover over links – Verify actual URLs and look for redirections.
+
+   Check attachments – Scan files using VirusTotal or sandbox tools.
+
+   Analyze URLs/domains – Use tools like URLScan, Whois, and VirusTotal.
+
+   Extract IOCs – Note malicious domains, IPs, hashes, sender addresses.
+
+   Report & respond – Block domains/IPs and warn users.
+
+-->What I Saw
+
+   Using VirusTotal/URLScan to check secure-paypai.com, the domain was flagged as malicious/suspicious by multiple engines. 
+   It lacked authentication records and had a recently registered domain age—strong signs of phishing activity.
+
+-->Submission
+
+   Attach your screenshot of the domain reputation result here in the GitHub repo to complete the task.
