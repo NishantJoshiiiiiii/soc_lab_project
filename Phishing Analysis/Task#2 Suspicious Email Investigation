@@ -1,0 +1,44 @@
+Bradesco Livelo Suspicious Email Investigation
+-->Objective
+
+   The objective of this lab is to analyze a suspicious email claiming to be from Banco do Bradesco Livelo.
+   I learned to trace the origin of an email, inspect headers, validate domains and IPs, identify spoofing techniques, and extract suspicious URLs commonly used in phishing attacks.
+
+-->Scenario
+
+   You received an urgent email stating that your Livelo card has 92,990 points expiring today, sent from:
+   banco.bradesco@atendimento.com.br
+
+   This email encourages the user to click a link to “redeem points,” making it a strong candidate for phishing analysis.
+
+❓ Questions to Answer
+
+   What is the full email address of the sender?
+
+   What domain is used to send this email (From / Return-Path)?
+
+   What is the sender’s IP address from the header?
+
+   Is the sender IP blacklisted? (Yes / No — based on AbuseIPDB or VirusTotal)
+
+   What is the SPF authentication result? (Pass / Fail / Neutral)
+
+   What suspicious URL or link appears in the email body?
+
+-->What I Saw During Analysis
+
+   The From address appeared legitimate, but the Return-Path showed a mismatched domain, indicating spoofing. The sender IP extracted from the header had a negative reputation and was blacklisted. 
+   SPF validation failed, proving the sender server wasn’t authorized to send emails for that domain. The email body contained a malicious redirect URL designed to capture user credentials. 
+   Urgent wording and mismatched branding further confirmed phishing intent.
+
+-->Submission Requirements
+
+Upload the following screenshots to your GitHub repo:
+
+Email header (sender, Return-Path, IP highlighted)
+
+IP reputation lookup (AbuseIPDB or VirusTotal)
+
+Suspicious link extracted from the email body
+
+Email content or HTML preview showing urgency/spoofing
