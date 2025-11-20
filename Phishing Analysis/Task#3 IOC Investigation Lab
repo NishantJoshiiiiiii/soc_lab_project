@@ -1,0 +1,47 @@
+IOC Investigation Lab
+-->Objective
+
+   The objective of this lab is to teach SOC analysts how to extract and investigate Indicators of Compromise (IOCs) from a suspicious email. 
+   I learned how to use threat intelligence platforms such as VirusTotal, AbuseIPDB, URLScan, OTX, and ThreatFox to determine whether an IP, domain, or file hash is malicious. This helps analysts make faster and more accurate escalation decisions.
+
+-->Scenario
+
+   While triaging a phishing alert, three suspicious indicators were discovered:
+
+   IP Address: 18.188.148.80
+
+   Domain: aaronthompson.ug
+
+   File Hash (SHA256): d45a079c59c2860f9cf4578a8fc9f5fe8009cff8aaa83c572474d6bfe15ba95b
+
+   Your task is to perform threat intelligence analysis on all three IOCs using multiple free tools.
+
+--> What I Saw During Analysis
+
+    The IP address originated from a foreign hosting provider and displayed malicious activity records. Its country registration was identified through AbuseIPDB/VT.
+    The suspicious domain showed poor reputation, recently registered infrastructure, and possible phishing intent based on URLScan.io results.
+    The file hash analysis on VirusTotal revealed the file type and flagged detections by multiple engines, including associated malware names or families, confirming its malicious nature.
+    These combined findings illustrate how threat intelligence helps link IOCs to phishing campaigns and hostile infrastructure.
+
+-->Tasks
+   What is the type of the malicious file?
+   -- 7zip
+
+   What country is this IP registered in?
+   -- USA
+   
+   What malware name (if any) is associated with this file on VirusTotal?
+   --trojan
+
+-->Submission Requirements
+
+   Upload the following screenshots to your GitHub repository:
+
+   IP Lookup – Screenshot of IP 18.188.148.80 (VirusTotal or AbuseIPDB)
+
+   Domain Lookup – Screenshot of aaronthompson.ug from VirusTotal or URLScan
+
+   Hash Analysis – Screenshot of the SHA256 hash showing file type, detection ratio, and malware name
+
+   (Optional) OTX or ThreatFox screenshot showing tags/campaign information
+
