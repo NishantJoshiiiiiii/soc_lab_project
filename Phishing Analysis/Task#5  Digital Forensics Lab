@@ -38,6 +38,7 @@ scp user@<TARGET-IP>:/home/user/linux_memory.mem ~/forensics/memory_dumps/
 -->Submission Requirements
 
 ✔️ Screenshot showing successful memory dump creation (linux_memory.mem)
+    https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/42fdf20971eb8b1600404b0e45c09795bf7f431d/IMG_20251121_184822995.jpg
 
 ✔️ Screenshot showing successful SCP transfer to the analysis machine
 
