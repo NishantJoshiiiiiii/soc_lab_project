@@ -1,0 +1,49 @@
+Linux Memory Acquisition using AVML – Digital Forensics Lab
+-->Objective
+
+   The objective of this lab is to guide students through the process of acquiring a live memory dump from an Ubuntu machine using AVML (Azure VM Memory Dumper by Microsoft). 
+   By completing this task, I will understand how volatile memory is captured, validated, and transferred for forensic investigation.
+   This exercise builds foundational skills required for SOC analysts, DFIR teams, and incident responders.
+
+-->Overview
+
+   Digital Forensics involves identifying, collecting, preserving, and analyzing digital evidence in a legally defensible manner.
+   Memory forensics is especially important because RAM contains highly volatile artifacts such as running processes, network connections, passwords in plaintext, browser activity, encryption keys, and malware traces. Capturing memory at the right time helps investigators reconstruct attacker behavior, identify root cause, and preserve evidence before it disappears.
+
+   This lab uses AVML, a lightweight Linux memory acquisition tool, to dump RAM from a target Ubuntu machine and transfer it to an analysis machine for further examination.
+
+-->Steps Performed
+1. Download AVML
+wget https://github.com/microsoft/avml/releases/latest/download/avml
+chmod +x avml
+./avml --help
+
+2. Acquire Memory Dump
+sudo ./avml linux_memory.mem
+ls -lh linux_memory.mem
+
+3. Validate Dump
+strings linux_memory.mem | grep "mozilla"
+
+4. Transfer Dump to Analysis Machine
+mkdir ~/forensics/memory_dumps
+scp user@<TARGET-IP>:/home/user/linux_memory.mem ~/forensics/memory_dumps/
+
+--> What I Saw / Observations
+
+    During the memory acquisition process, I observed how quickly AVML captures RAM without interrupting system activity. 
+    The memory dump contained strings related to active applications like browsers, indicating that RAM stores sensitive and real-time information. This reinforces the importance of collecting volatile evidence immediately during an incident.
+    Even simple strings output revealed traces of running processes, file paths, and user activity, demonstrating why memory analysis is a critical DFIR skill.
+
+-->Submission Requirements
+
+✔️ Screenshot showing successful memory dump creation (linux_memory.mem)
+
+✔️ Screenshot showing successful SCP transfer to the analysis machine
+
+✔️ Short observation on the importance of memory acquisition (included above)
+
+✅ Conclusion
+
+   This lab demonstrated how to perform Linux memory acquisition using AVML, validate the collected evidence, and securely transfer it for forensic investigation. 
+   These steps reflect real-world DFIR workflows where rapid response and proper evidence handling are essential.
