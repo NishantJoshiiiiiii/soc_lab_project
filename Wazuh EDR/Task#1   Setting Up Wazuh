@@ -1,0 +1,92 @@
+Setting Up Wazuh for Endpoint Detection & Response (EDR)
+-->Objective
+
+   The objective of this task is to help students set up a Wazuh Server using the Quick Start installation method and onboard an Ubuntu machine as a Wazuh agent. 
+   By completing this task, learners gain practical knowledge of deploying Wazuh for security monitoring, log analysis, file integrity monitoring (FIM), and threat detection—key responsibilities of a SOC Analyst.
+
+-->Introduction to EDR
+
+   Endpoint Detection and Response (EDR) tools monitor endpoint activity, detect suspicious behavior, and support incident response.
+   
+   SOC Analysts use EDR platforms to:
+
+     Detect anomalies like privilege escalation, persistence, malware activity
+
+     Correlate logs, alerts, and events
+
+     Collect forensic artifacts (logs, memory, file changes)
+
+     Perform threat hunting using IOCs
+
+     Respond to compromised endpoints
+
+   Wazuh is an open-source SIEM + EDR solution widely used for endpoint log monitoring, FIM, vulnerability detection, and threat intelligence integration.
+
+-->Requirements
+
+   System 1: Ubuntu 20.04/22.04 (Wazuh Server)
+
+   System 2:kali (Wazuh Agent)
+
+   Hardware (Server): 4 vCPU, 8GB RAM, 50GB storage
+
+   Root/sudo access on both machines
+
+   Both systems must communicate on the same network
+
+-->Step 1: Install Wazuh Server
+   curl -sO https://packages.wazuh.com/4.10/wazuh-install.sh && sudo bash ./wazuh-install.sh -a
+
+
+  After installation, access Wazuh at:
+   https://<SERVER-IP>
+   Default user: admin
+
+-->Step 2: Install & Configure Wazuh Agent
+   curl -sO https://packages.wazuh.com/4.7/wazuh-agent-linux.sh && sudo bash wazuh-agent-linux.sh
+   sudo nano /var/ossec/etc/ossec.conf
+
+
+   Set your server IP inside the <address> tag.
+
+   Start and enable agent:
+
+   sudo systemctl start wazuh-agent
+   sudo systemctl enable wazuh-agent
+
+-->What I Observed
+
+   After onboarding the Ubuntu machine, the agent appeared as Active in the dashboard.
+   Wazuh immediately began collecting:
+ 
+   Authentication logs
+
+   System activity
+
+   File changes (FIM)
+
+   Security events
+
+   Command execution logs
+
+   This shows how Wazuh provides visibility into endpoint behavior, making it useful for incident detection, monitoring, and early threat identification.
+
+-->Submission
+
+   Screenshot of Wazuh dashboard showing Active agent
+
+   Screenshot from Wazuh logs confirming successful agent connection
+
+-->Conclusion
+
+   In this task, I successfully:
+
+   Installed Wazuh Server using the Quick Start method
+
+   Deployed and configured a Wazuh Agent
+
+   Verified communication in the Wazuh Dashboard
+
+   Observed how Wazuh supports SOC operations through continuous endpoint monitoring, log analysis, and threat detection
+
+   This hands-on setup provides a strong foundation for understanding EDR concepts and real-world SOC workflows.
