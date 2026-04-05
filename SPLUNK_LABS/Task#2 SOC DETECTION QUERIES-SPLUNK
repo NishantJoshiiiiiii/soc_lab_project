@@ -1,0 +1,147 @@
+# SOC Detection Queries — Splunk SPL Lab
+
+**Author:** Nishant Joshi  
+**Role focus:** SOC Analyst L1/L2  
+**Tools:** Splunk, Wazuh, Windows Event Logs, Zeek/Sysmon  
+**Framework:** MITRE ATT&CK
+
+---
+
+## Overview
+
+This repository contains hands-on detection queries and lab work from my SOC home lab. Each query is built to detect real attacker techniques mapped to the MITRE ATT&CK framework, using log sources including Windows Event Logs, Zeek network logs, and Sysmon.
+
+---
+
+## Detection Queries
+
+### 1. RDP Brute-Force Detection
+
+**ATT&CK Technique:** T1110.001 — Brute Force: Password Guessing  
+**Log Source:** Windows Security Event Log  
+**Event ID:** 4625 (Failed logon)
+
+```spl
+index=windows sourcetype=WinEventLog:Security EventCode=4625
+| stats count by src_ip, user, host
+| where count > 10
+| sort -count
+```
+
+**What it detects:** Source IPs generating more than 10 failed authentication attempts against a host. The threshold of 10 is a starting baseline — in a production environment this would be tuned per subnet and time window.
+
+**True positive indicators:** High count from a single external IP, multiple targeted usernames, attempts outside business hours.
+
+**False positive reduction:** Whitelist known vulnerability scanners, adjust threshold with time-of-day filters, exclude internal monitoring tools.
+
+---
+
+### 2. Suspicious PowerShell Execution
+
+**ATT&CK Technique:** T1059.001 — Command and Scripting Interpreter: PowerShell  
+**Log Source:** Windows Security Event Log  
+**Event ID:** 4688 (Process creation — requires audit policy enabled)
+
+```spl
+index=windows sourcetype=WinEventLog:Security EventCode=4688
+CommandLine="*powershell*"
+| eval suspicious=if(match(CommandLine, "-enc|-nop|-w hidden|-exec bypass"), 1, 0)
+| where suspicious=1
+| table _time, host, user, CommandLine
+```
+
+**What it detects:** PowerShell executions containing common obfuscation or evasion flags used by attackers and malware loaders.
+
+**Flags explained:**
+- `-enc` — base64 encoded command (hides payload)
+- `-nop` — no profile (evades profile-based defences)
+- `-w hidden` — hidden window (evades user visibility)
+- `-exec bypass` — bypasses execution policy
+
+**True positive indicators:** Encoded commands from non-admin users, execution from unusual parent processes (e.g. `winword.exe` spawning PowerShell).
+
+---
+
+### 3. Lateral Movement — Network Logon (Pass the Hash / Remote Access)
+
+**ATT&CK Technique:** T1021 — Remote Services / T1550.002 — Pass the Hash  
+**Log Source:** Windows Security Event Log  
+**Event ID:** 4624 (Successful logon), Logon Type 3 (Network)
+
+```spl
+index=windows sourcetype=WinEventLog:Security EventCode=4624
+Logon_Type=3 NOT user="ANONYMOUS LOGON"
+| stats count by src_ip, dest_host, user
+| where count > 5
+| sort -count
+```
+
+**What it detects:** Repeated network logons (Type 3) from a single source to multiple hosts — a common pattern in lateral movement, pass-the-hash, and credential spraying.
+
+**Logon types reference:**
+| Type | Description |
+|------|-------------|
+| 2 | Interactive (local console) |
+| 3 | Network (SMB, file shares) |
+| 10 | Remote interactive (RDP) |
+
+**True positive indicators:** Single src_ip authenticating to 5+ hosts in a short window, NTLM authentication in a Kerberos environment.
+
+---
+
+### 4. C2 Beaconing Detection (Statistical)
+
+**ATT&CK Technique:** T1071 — Application Layer Protocol / T1095 — Non-Application Layer Protocol  
+**Log Source:** Zeek network logs (`zeek_conn`)
+
+```spl
+index=network sourcetype=zeek_conn
+| bucket _time span=1h
+| stats count by _time, dest_ip, dest_port
+| eventstats avg(count) as avg_count, stdev(count) as stdev_count by dest_ip
+| eval z_score=abs((count - avg_count) / stdev_count)
+| where z_score < 1 AND count > 20
+```
+
+**What it detects:** Statistically regular outbound connections to the same destination — the hallmark of automated C2 beaconing. Human browsing is irregular; malware callbacks are not.
+
+**Logic:** A low z-score means the connection count per hour barely varies from the average — that regularity is the signal. Combined with a volume filter (`count > 20`), this reduces noise from legitimate low-frequency cron jobs.
+
+**True positive indicators:** Regular intervals (e.g. every 60s), unusual destination ports, connections to newly registered domains, no corresponding DNS queries.
+
+---
+
+### 5. Data Exfiltration — Large Outbound Transfer
+
+**ATT&CK Technique:** T1048 — Exfiltration Over Alternative Protocol  
+**Log Source:** Zeek network logs (`zeek_conn`)
+
+```spl
+index=network sourcetype=zeek_conn
+| eval mb_sent = bytes_sent / 1048576
+| where mb_sent > 50
+| stats sum(mb_sent) as total_mb by src_ip, dest_ip
+| sort -total_mb
+| where total_mb > 200
+```
+
+**What it detects:** Internal hosts sending more than 200MB of data to a single external destination — a strong indicator of staged exfiltration.
+
+**Thresholds:** 50MB per session and 200MB aggregate are starting points. Production tuning would baseline normal outbound traffic per host role (e.g. a backup server legitimately transfers large volumes).
+
+**True positive indicators:** Transfer to cloud storage or paste sites, transfer outside business hours, encrypted traffic to an unknown destination, preceded by staging activity (T1074).
+
+---
+
+## Lab Environment
+
+| Component | Details |
+|-----------|---------|
+| SIEM | Splunk (local lab instance) |
+| EDR | Wazuh agents on Windows + Linux endpoints |
+| Log forwarding | Sysmon, Windows Event Forwarding |
+| Network logs | Zeek (formerly Bro) |
+| Threat intel | VirusTotal, Talos, PhishTools |
+| OS | Windows 10 (victim), Ubuntu (attacker/monitor) |
+
+---
