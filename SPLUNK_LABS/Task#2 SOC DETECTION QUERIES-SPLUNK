@@ -163,9 +163,9 @@ index="linux-alert" src_ip="10.10.242.248"
 | File | Description |
 |------|-------------|
 | `query1-linux-failed.png` | 500 failed attempts — linux-alert index |
-https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/main/Assets/IMG_20260405_125449944.jpg
+(https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/main/Assets/IMG_20260405_125449944.jpg)
 | `query2-win-4625.png` | Windows EventCode 4625 — oliver.thompson |
-https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/main/Assets/IMG_20260405_122907011.jpg
+(https://github.com/NishantJoshiiiiiii/soc_lab_project/blob/main/Assets/IMG_20260405_122907011.jpg)
 | `query3-success-after-fail.png` | Successful logins after brute force |
 
 *(Add screenshots from your Splunk lab to this folder)*
