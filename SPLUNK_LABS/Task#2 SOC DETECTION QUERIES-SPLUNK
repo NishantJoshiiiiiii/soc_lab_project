@@ -1,147 +1,180 @@
-# SOC Detection Queries — Splunk SPL Lab
+# Day 1 — SSH Brute Force Detection
 
-**Author:** Nishant Joshi  
-**Role focus:** SOC Analyst L1/L2  
-**Tools:** Splunk, Wazuh, Windows Event Logs, Zeek/Sysmon  
-**Framework:** MITRE ATT&CK
-
----
-
-## Overview
-
-This repository contains hands-on detection queries and lab work from my SOC home lab. Each query is built to detect real attacker techniques mapped to the MITRE ATT&CK framework, using log sources including Windows Event Logs, Zeek network logs, and Sysmon.
+**Analyst:** Nishant Joshi  
+**Platform:** TryHackMe — Alert Triage with Splunk  
+**Tool:** Splunk 9.4.7  
+**Index:** `linux-alert` / `win-alert`  
+**Date:** 05 April 2026  
+**ATT&CK Tactic:** Credential Access  
 
 ---
 
-## Detection Queries
+## Scenario
 
-### 1. RDP Brute-Force Detection
+Investigated suspicious login activity on Linux and Windows hosts. Source IP `10.10.242.248` (Linux) and `10.10.157.155` (Windows) were flagged. Performed end-to-end triage: identified brute-force pattern, confirmed successful authentication post-failure (MFA bypass indicator), and checked for privilege escalation.
+
+---
+
+## Query 1 — Count Failed Login Attempts
+
+**Goal:** Identify source IPs with high failed login counts — classic brute-force signature.
 
 **ATT&CK Technique:** T1110.001 — Brute Force: Password Guessing  
-**Log Source:** Windows Security Event Log  
-**Event ID:** 4625 (Failed logon)
+**Log Source:** Linux `auth.log` / Windows Security Event Log (EventCode=4625)
 
+### Linux (SSH failed passwords)
 ```spl
-index=windows sourcetype=WinEventLog:Security EventCode=4625
+index="linux-alert" src="10.10.242.248" "Failed Password" user="john.smith"
 | stats count by src_ip, user, host
-| where count > 10
-| sort -count
 ```
 
-**What it detects:** Source IPs generating more than 10 failed authentication attempts against a host. The threshold of 10 is a starting baseline — in a production environment this would be tuned per subnet and time window.
-
-**True positive indicators:** High count from a single external IP, multiple targeted usernames, attempts outside business hours.
-
-**False positive reduction:** Whitelist known vulnerability scanners, adjust threshold with time-of-day filters, exclude internal monitoring tools.
-
----
-
-### 2. Suspicious PowerShell Execution
-
-**ATT&CK Technique:** T1059.001 — Command and Scripting Interpreter: PowerShell  
-**Log Source:** Windows Security Event Log  
-**Event ID:** 4688 (Process creation — requires audit policy enabled)
-
+### Windows (EventCode 4625)
 ```spl
-index=windows sourcetype=WinEventLog:Security EventCode=4688
-CommandLine="*powershell*"
-| eval suspicious=if(match(CommandLine, "-enc|-nop|-w hidden|-exec bypass"), 1, 0)
-| where suspicious=1
-| table _time, host, user, CommandLine
-```
-
-**What it detects:** PowerShell executions containing common obfuscation or evasion flags used by attackers and malware loaders.
-
-**Flags explained:**
-- `-enc` — base64 encoded command (hides payload)
-- `-nop` — no profile (evades profile-based defences)
-- `-w hidden` — hidden window (evades user visibility)
-- `-exec bypass` — bypasses execution policy
-
-**True positive indicators:** Encoded commands from non-admin users, execution from unusual parent processes (e.g. `winword.exe` spawning PowerShell).
-
----
-
-### 3. Lateral Movement — Network Logon (Pass the Hash / Remote Access)
-
-**ATT&CK Technique:** T1021 — Remote Services / T1550.002 — Pass the Hash  
-**Log Source:** Windows Security Event Log  
-**Event ID:** 4624 (Successful logon), Logon Type 3 (Network)
-
-```spl
-index=windows sourcetype=WinEventLog:Security EventCode=4624
-Logon_Type=3 NOT user="ANONYMOUS LOGON"
-| stats count by src_ip, dest_host, user
+index="win-alert" source=WinEventLog:Security EventCode=4625
+| stats count by src_ip, user, host
 | where count > 5
-| sort -count
 ```
 
-**What it detects:** Repeated network logons (Type 3) from a single source to multiple hosts — a common pattern in lateral movement, pass-the-hash, and credential spraying.
+### Results
 
-**Logon types reference:**
-| Type | Description |
+| src_ip | user | host | count |
+|--------|------|------|-------|
+| 10.10.242.248 | john.smith | ce-splunk | 500 |
+| 10.10.157.155 | oliver.thompson | WIN-H015 | 7 |
+
+**Finding:** 500 failed SSH attempts from `10.10.242.248` against user `john.smith` — clear brute-force pattern. Windows host shows 7 failed attempts against `oliver.thompson`.
+
+---
+
+## Query 2 — Successful Login After Multiple Failures (MFA/Post-Brute Success)
+
+**Goal:** Detect if the attacker eventually succeeded — a successful login after many failures is the most critical finding in a brute-force investigation.
+
+**ATT&CK Technique:** T1110 — Brute Force (successful compromise)  
+**Log Source:** Linux `auth.log` (sourcetype=linux_secure)
+
+```spl
+index="linux-alert" src_ip="10.10.242.248" user="john.smith"
+action=failure OR action=success
+| sort -_time
+```
+
+### Results (from lab)
+
+| Time | Event |
+|------|-------|
+| 09:11:21 | **Accepted** password for john.smith from 10.10.242.248 port 53244 ssh2 |
+| 09:07:25 | **Accepted** password for john.smith from 10.10.242.248 port 47336 ssh2 |
+| 09:06:35 | **Failed** password for john.smith from 10.10.242.248 port 36706 ssh2 |
+| 09:06:35 | **Failed** password for john.smith from 10.10.242.248 port 36702 ssh2 |
+
+**Finding:** Attacker successfully authenticated at `09:07:25` and again at `09:11:21` after sustained failures. This confirms credential compromise — the brute force worked.
+
+**IR Action:** This is a **True Positive**. Account `john.smith` should be disabled and password reset immediately. Session at port 53244 and 47336 should be investigated for post-exploitation activity.
+
+---
+
+## Query 3 — Privilege Escalation / Sudo Usage Detection
+
+**Goal:** After confirming successful login, check if the attacker escalated privileges using sudo or gained root access.
+
+**ATT&CK Technique:** T1548.003 — Abuse Elevation Control Mechanism: Sudo  
+**Log Source:** Linux `auth.log` / `secure` logs
+
+```spl
+index="linux-alert" host="ce-splunk" (sudo OR "su -" OR "root")
+| table _time, host, user, action, _raw
+| sort -_time
+```
+
+### Alternative — check for new privileged sessions
+```spl
+index="linux-alert" src_ip="10.10.242.248"
+| search _raw="*sudo*" OR _raw="*su root*" OR _raw="*COMMAND*"
+| table _time, user, _raw
+| sort -_time
+```
+
+### What to look for in results
+
+| Indicator | What it means |
+|-----------|---------------|
+| `sudo: john.smith : COMMAND=/bin/bash` | Full shell via sudo — privilege escalation confirmed |
+| `su: (to root) john.smith on pts/0` | Direct root switch |
+| `session opened for user root` | Root session established |
+| `sudo: pam_unix(sudo:auth): authentication failure` | Failed sudo attempt — still suspicious |
+
+**Finding:** After confirming the successful SSH login, check the timeline for any sudo commands executed by `john.smith` in the window between `09:07:25` and `09:11:21`.
+
+---
+
+## Attack Timeline Reconstruction
+
+```
+09:06:35  [FAIL]  SSH brute force begins — john.smith @ ce-splunk
+              ... 500 failed attempts over ~1 hour ...
+09:07:25  [WIN]   Attacker succeeds — password cracked, SSH session established (port 47336)
+09:11:21  [WIN]   Second successful login (port 53244) — possible persistence
+              >>> Check for sudo/root activity in this window <<<
+```
+
+---
+
+## IOCs Identified
+
+| Type | Value |
+|------|-------|
+| Attacker IP | 10.10.242.248 |
+| Targeted user (Linux) | john.smith |
+| Targeted user (Windows) | oliver.thompson |
+| Target host (Linux) | ce-splunk |
+| Target host (Windows) | WIN-H015 |
+| Protocol | SSH (port 22), ssh2 |
+| First success | 2025-09-17 09:07:25 UTC |
+
+---
+
+## MITRE ATT&CK Mapping
+
+| Phase | Technique | ID |
+|-------|-----------|----|
+| Reconnaissance | (implied — targeted specific usernames) | — |
+| Credential Access | Brute Force: Password Guessing | T1110.001 |
+| Initial Access | Valid Accounts (post-compromise) | T1078 |
+| Privilege Escalation | Sudo and Sudo Caching Abuse | T1548.003 |
+| Persistence | (check for new accounts or SSH keys added) | T1136 |
+
+---
+
+## Remediation Steps
+
+1. Disable account `john.smith` immediately
+2. Force password reset on compromise confirmed
+3. Block IP `10.10.242.248` at firewall/EDR level
+4. Review `/home/john.smith/.ssh/authorized_keys` for backdoor keys
+5. Check for cron jobs or new user accounts created post-compromise
+6. Enable fail2ban or equivalent to auto-block after N failed SSH attempts
+7. Enforce MFA on SSH — use public key authentication, disable password auth
+
+---
+
+## Screenshots
+
+| File | Description |
 |------|-------------|
-| 2 | Interactive (local console) |
-| 3 | Network (SMB, file shares) |
-| 10 | Remote interactive (RDP) |
+| `query1-linux-failed.png` | 500 failed attempts — linux-alert index |
+  
+| `query2-win-4625.png` | Windows EventCode 4625 — oliver.thompson |
+| `query3-success-after-fail.png` | Successful logins after brute force |
 
-**True positive indicators:** Single src_ip authenticating to 5+ hosts in a short window, NTLM authentication in a Kerberos environment.
-
----
-
-### 4. C2 Beaconing Detection (Statistical)
-
-**ATT&CK Technique:** T1071 — Application Layer Protocol / T1095 — Non-Application Layer Protocol  
-**Log Source:** Zeek network logs (`zeek_conn`)
-
-```spl
-index=network sourcetype=zeek_conn
-| bucket _time span=1h
-| stats count by _time, dest_ip, dest_port
-| eventstats avg(count) as avg_count, stdev(count) as stdev_count by dest_ip
-| eval z_score=abs((count - avg_count) / stdev_count)
-| where z_score < 1 AND count > 20
-```
-
-**What it detects:** Statistically regular outbound connections to the same destination — the hallmark of automated C2 beaconing. Human browsing is irregular; malware callbacks are not.
-
-**Logic:** A low z-score means the connection count per hour barely varies from the average — that regularity is the signal. Combined with a volume filter (`count > 20`), this reduces noise from legitimate low-frequency cron jobs.
-
-**True positive indicators:** Regular intervals (e.g. every 60s), unusual destination ports, connections to newly registered domains, no corresponding DNS queries.
+*(Add screenshots from your Splunk lab to this folder)*
 
 ---
 
-### 5. Data Exfiltration — Large Outbound Transfer
+## Tools Used
 
-**ATT&CK Technique:** T1048 — Exfiltration Over Alternative Protocol  
-**Log Source:** Zeek network logs (`zeek_conn`)
+- Splunk 9.4.7 (TryHackMe AttackBox)
+- Linux `auth.log` / `linux_secure` sourcetype
+- Windows Event Log (Security, EventCode 4625)
+- MITRE ATT&CK Navigator (for mapping)
 
-```spl
-index=network sourcetype=zeek_conn
-| eval mb_sent = bytes_sent / 1048576
-| where mb_sent > 50
-| stats sum(mb_sent) as total_mb by src_ip, dest_ip
-| sort -total_mb
-| where total_mb > 200
-```
-
-**What it detects:** Internal hosts sending more than 200MB of data to a single external destination — a strong indicator of staged exfiltration.
-
-**Thresholds:** 50MB per session and 200MB aggregate are starting points. Production tuning would baseline normal outbound traffic per host role (e.g. a backup server legitimately transfers large volumes).
-
-**True positive indicators:** Transfer to cloud storage or paste sites, transfer outside business hours, encrypted traffic to an unknown destination, preceded by staging activity (T1074).
-
----
-
-## Lab Environment
-
-| Component | Details |
-|-----------|---------|
-| SIEM | Splunk (local lab instance) |
-| EDR | Wazuh agents on Windows + Linux endpoints |
-| Log forwarding | Sysmon, Windows Event Forwarding |
-| Network logs | Zeek (formerly Bro) |
-| Threat intel | VirusTotal, Talos, PhishTools |
-| OS | Windows 10 (victim), Ubuntu (attacker/monitor) |
-
----
